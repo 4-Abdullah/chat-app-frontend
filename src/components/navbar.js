@@ -7,6 +7,8 @@ export default function Navbar() {
     // const user = localStorage.getItem('username')
     const user = sessionStorage.getItem('username')
     const navigate = useNavigate();
+   const { setActive } = useContext(ChatContext);
+   const { setbot } = useContext(ChatContext);
       useEffect(() => {
         setBtntxt(user ? user: 'Login');
       }, [user]);
@@ -33,7 +35,7 @@ export default function Navbar() {
                  10ZM8.00016 13C7.44787 13 7.00016 13.4477 7.00016 14C7.00016 14.5523 7.44787 15 8.00016 15H14.0002C14.5524 15 15.0002 14.5523 15.0002 14C15.0002
                   13.4477 14.5524 13 14.0002 13H8.00016Z" fill="currentColor">
                 </path></svg></span></Link></li>
-            <li> <div className='navbar-link'>
+            <li> <div className='navbar-link' onClick={()=>{setActive(true); setbot(true)}}>
             <svg width="40" height="40"
               viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg" class="icon-lg"><path d="M11.2475 18.25C10.6975 18.25 10.175 18.1455 9.67999
                17.9365C9.18499 17.7275 8.74499 17.436 8.35999 17.062C7.94199 17.205 7.50749 17.2765 7.05649 17.2765C6.31949 17.2765 5.63749 17.095 5.01049 16.732C4.38349

@@ -5,13 +5,15 @@ import './App.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom'
-
+import { ChatProvider } from './Context API/Context';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
+    <ChatProvider>
   <BrowserRouter>
     <App />
   </BrowserRouter>
+  </ChatProvider> 
   </React.StrictMode>
 );
 
