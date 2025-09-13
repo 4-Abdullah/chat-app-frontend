@@ -6,7 +6,7 @@ import {
 } from '@szhsin/react-menu';
 import '@szhsin/react-menu/dist/index.css';
 import ReactDom from 'react-dom'
-export default function MenuModel({direction,userMenu,position,setCheckMenu,message,copyToClipboard,handleShare,deleteMessage}) {
+export default function MenuModel({direction,userMenu,setCheckMenu,message,copyToClipboard,handleShare,deleteMessage}) {
 //  const style = {backgroundColor:'red',borderRadius:'5px'}
   return(
     <>

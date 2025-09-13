@@ -29,7 +29,6 @@ function ChatApp() {
   const [Users, setUsers] = useState([]);
   const [SearchUser, setSearchUsers] = useState([]);
   const inputRef = useRef(null);
-  const [open, setOpen] = useState(false);
   const { active, setActive } = useContext(ChatContext);
   const { bot, setbot } = useContext(ChatContext);
   const [menuOpen, setMenuOpen] = useState("false");
