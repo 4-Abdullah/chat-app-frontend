@@ -1,4 +1,4 @@
-// context/ChatContext.js
+// Package Block
 import { createContext, useState } from 'react';
 
 export const ChatContext = createContext();

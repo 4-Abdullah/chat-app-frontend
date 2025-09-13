@@ -63,15 +63,22 @@ export default function Navbar() {
                 12.606 5.2095 12.848 5.3635L15.983 7.195C15.983 7.118 15.983 7.019 15.983 6.898C15.983 6.37 15.851 5.8695 15.587 5.3965C15.334 4.9125 14.9655 4.5275 14.4815
                  4.2415C14.0085 3.9555 13.4585 3.8125 12.8315 3.8125C12.2815 3.8125 11.803 3.928 11.396 4.159L8.29399 5.941C8.18399 6.018 8.12899 6.1225 8.12899 6.2545V7.6735L12.122 5.3635Z">
                   </path></svg></div></li>
-            <li><Link className='navbar-link' to={'./Login'}>{btnText}</Link></li>
+              <div style={{height:'73vh'}}/>
+            <li><Link className='navbar-link' to={'./Login'}><span aria-hidden="true" data-icon="account-circle" class=""><svg viewBox="0 0 24 24"
+             height="42" width="42" preserveAspectRatio="xMidYMid meet" class="x1vef352 x1rg5ohu" fill="none"><title>{btnText}</title><path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22
+              12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM12 5C13.66 5 15 6.34 15 8C15 9.66 13.66 11 12 11C10.34 11 9 9.66 9 8C9 6.34 10.34 5 12 5ZM12 19.2C9.5 19.2 7.29 17.92 6
+               15.98C6.03 13.99 10 12.9 12 12.9C13.99 12.9 17.97 13.99 18 15.98C16.71 17.92 14.5 19.2 12 19.2Z" fill="currentColor"></path></svg></span>
+               {/* {btnText} */}
+               </Link></li>
             {user&&
-            <li><Link className='navbar-link' to={'./'}><button style={{color:'red'}} onClick={Logout}><span aria-hidden="true" data-icon="exit-refreshed" class="x1sr8853">
-              <svg viewBox="0 0 24 24" height="42" width="42" preserveAspectRatio="xMidYMid meet" class="" fill="none"><title>exit-refreshed</title>
+            <li ><Link className='navbar-link' to={'./'}><button style={{color:'crimson',backgroundColor:'inherit',border:'none',cursor:'pointer'}} onClick={Logout}><span aria-hidden="true"
+             data-icon="exit-refreshed" class="x1sr8853">
+              <svg viewBox="0 0 24 24" height="35" width="42" preserveAspectRatio="xMidYMid meet" class="" fill="none"><title>exit-refreshed</title>
               <path d="M5 21C4.45 21 3.97917 20.8042 3.5875 20.4125C3.19583 20.0208 3 19.55 3 19V5C3 4.45 3.19583 3.97917 3.5875 3.5875C3.97917 3.19583
                4.45 3 5 3H11C11.5523 3 12 3.44772 12 4C12 4.55228 11.5523 5 11 5H5V19H11C11.5523 19 12 19.4477 12 20C12 20.5523 11.5523 21 11 21H5ZM16.7252
                 16.2748C16.3279 16.6721 15.681 16.6636 15.2943 16.2558C14.9218 15.863 14.93 15.245 15.3127 14.8623L17.175 13H10C9.44771 13 9 12.5523 9 12C9
                  11.4477 9.44772 11 10 11H17.175L15.3127 9.13775C14.93 8.755 14.9218 8.13701 15.2943 7.74424C15.681 7.33644 16.3279 7.32786 16.7252
-                  7.72525L21 12L16.7252 16.2748Z" fill="currentColor"></path></svg></span>Logout</button></Link></li>
+                  7.72525L21 12L16.7252 16.2748Z" fill="currentColor"></path></svg></span></button></Link></li>
             }
         </ul>
     // </nav>

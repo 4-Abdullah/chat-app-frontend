@@ -56,22 +56,38 @@
   100% { transform: rotate(360deg); }
 }
 
+/* upload custom */
+.custom-upload {
+  display: inline-block;
+  padding:10px;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  background-color:#0A0A0A;
+  color: white;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: large;
+}
+
+/* Navbar */
 .navbar{
   list-style:none;
   text-decoration:none;
   margin: 0px;
-  background-color: #E6E6FA;
-width:'100%';
-padding: 10px;
-  row-gap:24vh;
+  background-color: #F7F5F3;
+  width:'100%';
+  padding: 10px;
   display: flex;
   flex-direction: column;
 }
 .navbar-link{
   text-decoration:none;
-  color: #61dafb;
+  color: #0a0a0a;
+  cursor: pointer;
 }
 
+/* ChatCard */
 .chatCard{
   background-color: #61dafb;
   border-radius: 5px;
@@ -81,3 +97,18 @@ padding: 10px;
 
 }
 
+/* Button */
+.btn {
+  color: red;
+  border: none;
+  border-radius: 5px;
+  margin: 5px;
+  font-size: large;
+  padding: 5px;
+  background-color:#0A0A0A;
+}
+
+.btn:hover {
+  color: #61dafb;
+  background-color:black;
+}
