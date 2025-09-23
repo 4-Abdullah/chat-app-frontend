@@ -36,7 +36,8 @@ function ChatApp() {
   const scrollContainerRef = useRef();
   const position = useListMenuPosition(anchorRef, scrollContainerRef);
   const [result, setresult] = useState({});
-  console.log("chatbot", message);
+  const _id = useRef(0);
+
   const action = async () => {
     const res = await fetch("http://localhost:5000/chatbot", {
       method: "POST",
@@ -60,8 +61,9 @@ function ChatApp() {
     setMessage("");
     console.log(data);
   };
+
+  // const [user, setUser] = useState(() => sessionStorage.getItem("username"));
   const user = sessionStorage.getItem("username");
-  console.log(user);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -95,18 +97,30 @@ function ChatApp() {
         setUsers(() => [...data.friends]);
       }
     })();
-
+// Frontend
+socket.emit("registerUser", { username:user });
+    socket.on(
+      "delmessage",
+      (id) => {
+        console.log(id);
+        // console.log(chat.filter(item => item._id !== id))
+       setChats(prev => prev.filter(item => item._id !== id));
+      //  console.log(chat)
+      }
+      
+    );
     socket.on(
       "message",
-      (username, friendName, message, imageUrls, serverOffset) => {
+      (id,username, friendName, message, imageUrls,serverOffset) => {
         console.log(username, friendName, message, imageUrls);
         setChats((prev) => [
           ...prev,
-          { from: username, message: message, image: imageUrls },
+          {_id:id, from: username, message: message, image: imageUrls },
         ]);
         socket.auth.serverOffset = serverOffset;
       }
     );
+
     socket.on("uploadStarted", (fileName) => {
       console.log(`Uploading ${fileName}...`);
       setUploading(true);
@@ -120,14 +134,18 @@ function ChatApp() {
 
     // 🧹 Clean up on unmount
     return () => {
-      socket.off();
+      socket.off("message");
+      socket.off("delmessage");
+      socket.off("uploadStarted");
+      socket.off("uploadComplete");
     };
-  }, [user]);
+  },[user]);
 
   const handleSubmit = async (friendName) => {
     if (message || imageChunks.length) {
-      console.log(message);
+      console.log(_id,message);
       socket.emit("sendMessage", {
+        id: _id.current++,
         username: user,
         friendName,
         message,
@@ -137,6 +155,7 @@ function ChatApp() {
       setMessage("");
       inputRef.current.value = "";
     }
+
   };
 
   const SearchUsers = async (e) => {
@@ -148,19 +167,23 @@ function ChatApp() {
   };
 
   const getMessages = async (friendName) => {
-    if (chat.length > 0) setChats(() => []);
+    console.log((chat[0]?.to===friendName)||(chat[0]?.from===friendName))
+    if(chat.length > 0&&((chat[0]?.to===friendName)||(chat[0]?.from===friendName))){
+       console.log("what",chat[0]?.to)  
+       return 
+    }
+    else { 
     const res = await fetch(
       `http://localhost:5000/Friend/messages?username=${user}&friendName=${friendName}`
     );
     const data = await res.json();
-
     setFriendName(friendName);
     if (!active) setActive(true);
     if (bot) setbot(false);
     if (res.status === 200) {
       console.log(data);
       setChats(() => [...data.chatList]);
-    }
+    }}
   };
 
   const addFriend = async (friendName) => {
@@ -177,18 +200,12 @@ function ChatApp() {
     setUsers(() => [...data.friends]);
   };
 
-  const deleteMessage = async (message, image) => {
-    const res = await fetch(`http://localhost:5000/messages`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ username: user, FriendName, message, image }),
-    });
-    const data = await res.json();
-    console.log(data);
+  const deleteMessage = async (message, image,id) => {
+    
+ socket.emit("deleteMessage", {
+         id,username: user, FriendName, message, image 
+      });
 
-    setChats(() => [...data.messageList]);
   };
 
   const copyToClipboard = async (text) => {
@@ -217,11 +234,10 @@ function ChatApp() {
   };
 
   function testlink(message) {
-    const test = linkify.find(message);
+    const test = linkify?.find(message);
     if (test[0]?.isLink) {
       return test[0]?.value;
     }
-    console.log(test[0]?.isLink, message, chat);
     return test[0]?.isLink;
   }
 
@@ -262,11 +278,11 @@ function ChatApp() {
 
   const Spinner = () => (
     <div className="wrapper">
-      <div className="loader">Uploading...</div>
+      <h1 style={{backgroundColor:'darkmagenta'}}>Uploading...</h1>
     </div>
   );
 
-  console.log(chat);
+  // console.log(chat);
 
   return (
     <div
@@ -516,7 +532,7 @@ function ChatApp() {
                                   {message.image?.length > 0 &&
                                   message.message ? (
                                     <div>
-                                      <img
+                                      <img style={{borderRadius:'5px'}}
                                         src={message.image}
                                         alt="uploaded"
                                         width={300}
@@ -534,7 +550,7 @@ function ChatApp() {
                                   ) : (
                                     <>
                                       {message.image?.length > 0 ? (
-                                        <img
+                                        <img style={{borderRadius:'5px'}}
                                           src={message.image}
                                           alt="uploaded"
                                           width={300}
@@ -558,11 +574,10 @@ function ChatApp() {
                                 direction="left"
                                 userMenu="userMenu"
                                 position={position}
-                                anchorRef={anchorRef?.current[index]}
                                 setCheckMenu={setMenuOpen}
                                 CheckMenu={menuOpen}
                                 index={index}
-                                message={message}
+                                message={{message:message.message,image:message.image,id:message._id}}
                                 copyToClipboard={copyToClipboard}
                                 handleShare={handleShare}
                                 deleteMessage={deleteMessage}
@@ -578,6 +593,7 @@ function ChatApp() {
                               textAlign: "start",
                               padding: "5px",
                               width: "fit-content",
+                              position: "relative",
                             }}
                           >
                             <div
@@ -648,11 +664,10 @@ function ChatApp() {
                                 direction="right"
                                 userMenu=""
                                 position={position}
-                                anchorRef={anchorRef?.current[index]}
                                 setCheckMenu={setMenuOpen}
                                 CheckMenu={menuOpen}
                                 index={index}
-                                message={message}
+                                message={{message:message.message,image:message.image}}
                                 copyToClipboard={copyToClipboard}
                                 handleShare={handleShare}
                                 deleteMessage={deleteMessage}
@@ -664,7 +679,8 @@ function ChatApp() {
                     ))
                   )}
                 </ul>
-                <div>{uploading && <Spinner />}</div>
+                <>{uploading && <Spinner />}</>
+                
                 <div style={{ padding: "10px", paddingTop: "0px" }}>
                   <div
                     style={{

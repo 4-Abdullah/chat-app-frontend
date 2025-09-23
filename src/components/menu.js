@@ -7,7 +7,7 @@ import {
 import '@szhsin/react-menu/dist/index.css';
 import ReactDom from 'react-dom'
 export default function MenuModel({direction,userMenu,setCheckMenu,message,copyToClipboard,handleShare,deleteMessage}) {
-//  const style = {backgroundColor:'red',borderRadius:'5px'}
+
   return(
     <>
      <Menu direction={direction}
@@ -29,7 +29,7 @@ export default function MenuModel({direction,userMenu,setCheckMenu,message,copyT
       <MenuItem  onClick={typeof(message.message)==='string'?()=>copyToClipboard(message.message):'download'}>Copy</MenuItem>
       <MenuItem  onClick={()=>handleShare(message.message)}>Share</MenuItem>
       {userMenu&&
-      <MenuItem onClick={()=>deleteMessage(message.message,message.image)}>Delete</MenuItem>}
+      <MenuItem onClick={()=>deleteMessage(message.message,message.image,message.id)}>Delete</MenuItem>}
     </Menu>
     </>
   );
